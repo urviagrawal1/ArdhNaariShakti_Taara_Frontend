@@ -24,36 +24,67 @@
 /* ===== Filter ===== */
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--theme-light-bg, #eca0ca);
-  padding: 0.2rem 1rem; /* reduced vertical padding */
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  margin: 0 0 1rem 0;
-  max-width: 300px; /* wider */
-}
-
-.filter-select {
-  padding: 0.25rem 0.6rem; /* smaller height */
-  font-size: 0.85rem;       /* slightly smaller text */
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  height: auto;             /* auto-adjust */
-  background-color: #fdf9fb; /* match filter-container bg */
+  margin-bottom: 2rem;
+  gap: 0.8rem;
+  background: rgba(238, 155, 219, 0.95);
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  backdrop-filter: blur(10px);
 }
 
 .filter-label {
+  font-weight: 600;
+  color: #020811;
   font-size: 0.85rem;
-  font-weight: 500;
-  white-space: nowrap;
-  color: #6b2a4a; /* pick your theme color here */
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
+
+.filter-select,
+.filter-input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000204;
+  font-size: 0.8rem;
+  font-weight: 500;
+  min-width: 120px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-input {
+  min-width: 150px;
+}
+
+.filter-select:hover,
+.filter-input:hover {
+  border-color: #cbd5e0;
+  background: rgb(233, 137, 233);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
 
 /* ===== Job Grid ===== */
 .jobs-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* two columns */
+  grid-template-columns: repeat(2, 1fr); /* always two columns */
   gap: 1.5rem;
 }
 
@@ -129,15 +160,27 @@
 
 .content-wrapper h2 {
   margin: 0.5rem 0;
-  font-size: 1.1rem; /* smaller for compactness */
-  color: #130101;
+  font-size: 1.5rem; /* balanced size */
+  color: #000; /* solid black */
   font-weight: 700;
   text-align: center;
+  line-height: 1.3;
+}
+
+.company-info {
+  margin-bottom: 0.8rem;
+}
+
+.company-info h4 {
+  color: #020a1a;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
 }
 
 .blog-meta {
   font-size: 0.95rem;
-  color: #110101;
+  color: #070000;
   margin-bottom: 0.3rem;
   text-align: center;
 }
@@ -150,15 +193,22 @@
   margin-bottom: 1rem;
   font-size: 0.9rem;
   border-radius: 6px;
+
+  /* from HEAD */
   min-height: 60px;
   display: flex;
   flex-direction: column;
+
+  /* from upstream */
+  border: 1px solid #dee2e6;
+  color: #495057;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ===== Blog Text ===== */
 .blog-text {
   font-size: 0.9rem;
-  color: #333;
+  color: #100101;
   margin: 0.5rem 0 1rem 0;
   flex: 1;
   display: -webkit-box;
@@ -192,7 +242,43 @@
   transform: translateY(0);
 }
 
-/* ===== Mobile View ===== */
+/* read-more-btn hover effects from upstream */
+.read-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.read-more-btn:hover::before {
+  left: 100%;
+}
+
+/* fade-in animation from upstream */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+
+/* Tablet (<= 900px): just center filters */
+@media (max-width: 900px) {
+  .filter-container {
+    justify-content: center;
+  }
+}
+
+/* Mobile (<= 700px): your version with column layout */
 @media (max-width: 700px) {
   .card-wrapper {
     width: 100%; /* full width for mobile */
@@ -204,12 +290,25 @@
 
   .image-wrapper {
     flex: none;
-    width: 100%;
-    height: auto;
-    margin-right: 0;
-    margin-bottom: 0.6rem;
+  }
+}
+
+/* Very small screens (<= 600px): upstream filter tweaks */
+@media (max-width: 600px) {
+  .filter-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
   }
 
+  .filter-select,
+  .filter-input {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 700px) {
   .image-wrapper img {
     width: 100%;
     height: auto;
@@ -230,16 +329,22 @@
   }
 
   .apply-btn {
-  display: inline-block;
-  margin: 0 auto;
-  width: fit-content;
-  text-align: center;
-}
+    display: inline-block;
+    margin: 0 auto;
+    width: fit-content;
+    text-align: center;
+  }
 
   .job-info-box {
     display: none;
   }
   .job-card.show-details .job-info-box {
     display: block;
+  }
+
+  /* merged from upstream */
+  .read-more-btn {
+    width: 100%;
+    text-align: center;
   }
 }

@@ -92,77 +92,98 @@ const jobData = [
 
 export const Jobs = () => {
   const [sortOrder, setSortOrder] = useState("newest");
+  const [search, setSearch] = useState("");
 
-  const sortedJobs = [...jobData].sort((a, b) => {
+  // Filtering only on search for now (jobType/location/remote not present in data)
+  const filteredJobs = jobData.filter((job) => {
+    return (
+      job.role.toLowerCase().includes(search.toLowerCase()) ||
+      job.company.toLowerCase().includes(search.toLowerCase()) ||
+      job.description.toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
   });
 
   return (
-  <div className="container">
-    <p className="jobs-page-desc">
-      Browse and apply to curated job opportunities. Use the filter to sort by date and find your next role!
-    </p>
+    <div className="container">
+      {/* Page Intro */}
+      <p className="jobs-page-desc">
+        Browse and apply to curated job opportunities. Use the filter to sort by
+        date and find your next role!
+      </p>
 
-    <div className="filter-container">
-      <label htmlFor="sortOrder" className="filter-label">
-        Sort by Date:
-      </label>
-      <select
-        id="sortOrder"
-        value={sortOrder}
-        onChange={(e) => setSortOrder(e.target.value)}
-        className="filter-select"
-      >
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-      </select>
-    </div>
+      {/* Filter Bar */}
+      <div className="filter-container" style={{ gap: "0.8rem" }}>
+        <input
+          type="text"
+          placeholder="Search jobs..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="filter-input"
+        />
 
-    <div className="jobs-grid">
-      {sortedJobs.map((job, idx) => (
-        <div className="card-wrapper fade-in" key={idx}>
-          <div className="single-blog">
-            <div className="image-wrapper zoom-hover">
-              <img src={job.image} alt={`${job.company} - ${job.role}`} />
-            </div>
+        <label htmlFor="sortOrder" className="filter-label">
+          Sort by Date:
+        </label>
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="filter-select"
+        >
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+      </div>
 
-            <div className="content-wrapper">
-              <h2>{job.role}</h2>
-              <div className="company-info">
-                <h4>{job.company}</h4>
+      {/* Jobs Grid */}
+      <div className="jobs-grid">
+        {sortedJobs.map((job, idx) => (
+          <div className="card-wrapper fade-in" key={idx}>
+            <div className="single-blog">
+              <div className="image-wrapper zoom-hover">
+                <img src={job.image} alt={`${job.company} - ${job.role}`} />
               </div>
 
-              <div className="blog-meta">
-                <p className="blog-meta date-posted">
-                  <span>Date Posted: {job.date}</span>
-                </p>
-                {job.deadline && (
-                  <p className="blog-meta deadline">
-                    <strong>Deadline:</strong> {job.deadline}
+              <div className="content-wrapper">
+                <h2>{job.role}</h2>
+                <div className="company-info">
+                  <h4>{job.company}</h4>
+                </div>
+
+                <div className="blog-meta">
+                  <p className="blog-meta date-posted">
+                    <span>Date Posted: {job.date}</span>
                   </p>
-                )}
-              </div>
+                  {job.deadline && (
+                    <p className="blog-meta deadline">
+                      <strong>Deadline:</strong> {job.deadline}
+                    </p>
+                  )}
+                </div>
 
-              <p className="blog-text">{job.description}</p>
+                <p className="blog-text">{job.description}</p>
 
-              <div className="button-container">
-                <a
-                  href={job.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="apply-btn"
-                >
-                  Apply Here
-                </a>
+                <div className="button-container">
+                  <a
+                    href={job.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="apply-btn"
+                  >
+                    Apply Here
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
-);
-
-}
+  );
+};
