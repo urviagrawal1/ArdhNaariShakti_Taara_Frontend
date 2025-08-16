@@ -100,92 +100,69 @@ export const Jobs = () => {
   });
 
   return (
-    <div className="container">
-      <p className="jobs-page-desc">
-        Browse and apply to curated job opportunities. Use the filter to sort by date and find your next role!
-      </p>
+  <div className="container">
+    <p className="jobs-page-desc">
+      Browse and apply to curated job opportunities. Use the filter to sort by date and find your next role!
+    </p>
 
-      <div className="filter-container">
-        <label htmlFor="sortOrder" className="filter-label">
-          Sort by Date:
-        </label>
-        <select
-          id="sortOrder"
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-          className="filter-select"
-        >
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </select>
-      </div>
+    <div className="filter-container">
+      <label htmlFor="sortOrder" className="filter-label">
+        Sort by Date:
+      </label>
+      <select
+        id="sortOrder"
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        className="filter-select"
+      >
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
 
-      <div className="jobs-grid">
-        {sortedJobs.map((job, idx) => (
-          <div className="card-wrapper fade-in" key={idx}>
-            <div className="single-blog">
-              <div className="image-wrapper zoom-hover">
-                <img src={job.image} alt={`${job.company} - ${job.role}`} />
+    <div className="jobs-grid">
+      {sortedJobs.map((job, idx) => (
+        <div className="card-wrapper fade-in" key={idx}>
+          <div className="single-blog">
+            <div className="image-wrapper zoom-hover">
+              <img src={job.image} alt={`${job.company} - ${job.role}`} />
+            </div>
+
+            <div className="content-wrapper">
+              <h2>{job.role}</h2>
+              <div className="company-info">
+                <h4>{job.company}</h4>
               </div>
 
-              <div className="content-wrapper">
-                <h2>{job.role}</h2>
-                <div className="company-info">
-                  <h4>{job.company}</h4>
-                </div>
-
-                <div className="blog-meta">
-                  <p className="blog-meta date-posted">
-                    <span>Date Posted: {job.date}</span>
+              <div className="blog-meta">
+                <p className="blog-meta date-posted">
+                  <span>Date Posted: {job.date}</span>
+                </p>
+                {job.deadline && (
+                  <p className="blog-meta deadline">
+                    <strong>Deadline:</strong> {job.deadline}
                   </p>
-                  {job.deadline && (
-                    <p className="blog-meta deadline">
-                      <strong>Deadline:</strong> {job.deadline}
-                    </p>
-                  )}
-                </div>
-
-                {(job.eligibility || job.documents || job.steps || job.notes) && (
-                  <div className="job-info-box">
-                    {job.eligibility && (
-                      <div><strong>Eligibility:</strong> {job.eligibility}</div>
-                    )}
-                    {job.documents && (
-                      <div><strong>Required Documents:</strong> {job.documents}</div>
-                    )}
-                    {job.steps && (
-                      <div>
-                        <strong>Steps to Apply:</strong>
-                        <ol>
-                          {job.steps.map((step, i) => (
-                            <li key={i}>{step}</li>
-                          ))}
-                        </ol>
-                      </div>
-                    )}
-                    {job.notes && (
-                      <div><strong>Notes:</strong> {job.notes}</div>
-                    )}
-                  </div>
                 )}
+              </div>
 
-                <p className="blog-text">{job.description}</p>
+              <p className="blog-text">{job.description}</p>
 
-                <div className="button-container">
-                  <a
-                    href={job.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="apply-btn"
-                  >
-                    Apply Here
-                  </a>
-                </div>
+              <div className="button-container">
+                <a
+                  href={job.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="apply-btn"
+                >
+                  Apply Here
+                </a>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
 }
